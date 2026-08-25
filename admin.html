@@ -2,7 +2,6 @@
 <html lang="th">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -10,10 +9,9 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>DINOXSTORE - Admin</title>
+  <title>DINOXSTORE - Admin Login</title>
 
   <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
@@ -26,30 +24,77 @@
         DINOXSTORE
       </div>
 
-      <h1>จัดการ Email</h1>
+      <div id="loginSection">
 
-      <p class="description">
-        รายการ Email ในระบบ
-      </p>
+        <h1>Admin Login</h1>
 
-      <div class="count-box">
+        <p class="description">
+          กรุณาเข้าสู่ระบบผู้ดูแล
+        </p>
 
-        <span>จำนวน Email</span>
+        <input
+          type="text"
+          id="username"
+          placeholder="Username"
+          autocomplete="username"
+        >
 
-        <strong id="emailCount">
-          0
-        </strong>
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          autocomplete="current-password"
+        >
+
+        <button id="loginButton">
+          เข้าสู่ระบบ
+        </button>
+
+        <div id="loginMessage"></div>
 
       </div>
 
-      <input
-        type="search"
-        id="search"
-        placeholder="ค้นหา Email..."
+
+      <div
+        id="adminSection"
+        style="display:none;"
       >
 
-      <div id="emailList">
-        กำลังโหลด...
+        <h1>จัดการ Email</h1>
+
+        <p class="description">
+          รายการ Email ในระบบ
+        </p>
+
+        <div class="count-box">
+
+          <span>
+            จำนวน Email
+          </span>
+
+          <strong id="emailCount">
+            0
+          </strong>
+
+        </div>
+
+        <input
+          type="search"
+          id="search"
+          placeholder="ค้นหา Email..."
+        >
+
+        <div id="emailList">
+          กำลังโหลด...
+        </div>
+
+        <button
+          id="logoutButton"
+          type="button"
+        >
+          ออกจากระบบ
+        </button>
+
       </div>
 
     </div>
