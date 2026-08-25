@@ -1,124 +1,105 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbwaTjFVJhkfMukJXigVH_8N2j1F0_4Y7nEVJbsn4iJQt5KhtS5NNsKnNi7UpPuvIq3C-Q/exec";
 
+const loginButton =
+  document.getElementById("loginButton");
 
-const emailList =
-  document.getElementById("emailList");
+const loginMessage =
+  document.getElementById("loginMessage");
 
-const emailCount =
-  document.getElementById("emailCount");
+const loginSection =
+  document.getElementById("loginSection");
 
-const search =
-  document.getElementById("search");
-
-
-let emails = [];
-
-
-async function loadEmails() {
-
-  try {
-
-    emailList.textContent =
-      "กำลังโหลด...";
+const adminSection =
+  document.getElementById("adminSection");
 
 
-    const response =
-      await fetch(API_URL);
+loginButton.addEventListener(
+  "click",
+  async function () {
+
+    const username =
+      document.getElementById("username").value.trim();
+
+    const password =
+      document.getElementById("password").value;
 
 
-    const result =
-      await response.json();
+    if (!username || !password) {
+
+      loginMessage.textContent =
+        "กรุณากรอก Username และ Password";
+
+      return;
+    }
 
 
-    if (!result.success) {
+    loginMessage.textContent =
+      "กำลังเข้าสู่ระบบ...";
 
-      throw new Error(
-        result.message
-      );
+    loginButton.disabled = true;
+
+
+    try {
+
+      const response =
+        await fetch(API_URL, {
+
+          method: "POST",
+
+          body: JSON.stringify({
+
+            action: "login",
+
+            username: username,
+
+            password: password
+
+          })
+
+        });
+
+
+      const result =
+        await response.json();
+
+
+      if (result.success) {
+
+        sessionStorage.setItem(
+          "adminToken",
+          result.token
+        );
+
+
+        loginSection.style.display =
+          "none";
+
+        adminSection.style.display =
+          "block";
+
+
+        loginMessage.textContent =
+          "";
+
+      } else {
+
+        loginMessage.textContent =
+          result.message ||
+          "Username หรือ Password ไม่ถูกต้อง";
+
+      }
+
+
+    } catch (error) {
+
+      loginMessage.textContent =
+        "ไม่สามารถเชื่อมต่อระบบได้";
 
     }
 
 
-    emails = result.data || [];
-
-
-    emailCount.textContent =
-      emails.length;
-
-
-    renderEmails();
-
-
-  } catch (error) {
-
-    emailList.innerHTML =
-      "<p>ไม่สามารถโหลดข้อมูลได้</p>";
+    loginButton.disabled = false;
 
   }
-
-}
-
-
-function renderEmails() {
-
-  const keyword =
-    search.value
-      .trim()
-      .toLowerCase();
-
-
-  const filtered =
-    emails.filter(function(item) {
-
-      return item.email
-        .toLowerCase()
-        .includes(keyword);
-
-    });
-
-
-  if (filtered.length === 0) {
-
-    emailList.innerHTML =
-      "<p>ไม่พบ Email</p>";
-
-    return;
-
-  }
-
-
-  emailList.innerHTML =
-    filtered.map(function(item) {
-
-      const date =
-        new Date(item.date)
-          .toLocaleString("th-TH");
-
-
-      return `
-        <div class="email-item">
-
-          <strong>
-            ${item.email}
-          </strong>
-
-          <small>
-            ${date}
-          </small>
-
-        </div>
-      `;
-
-    }).join("");
-
-}
-
-
-search.addEventListener(
-  "input",
-  renderEmails
 );
-
-
-loadEmails();
