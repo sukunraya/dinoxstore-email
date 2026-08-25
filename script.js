@@ -25,7 +25,7 @@ form.addEventListener("submit", async function(event) {
   try {
 
     const response = await fetch(
-      "WEB_APP_URL",
+      "https://script.google.com/macros/s/AKfycbwaTjFVJhkfMukJXigVH_8N2j1F0_4Y7nEVJbsn4iJQt5KhtS5NNsKnNi7UpPuvIq3C-Q/exec",
       {
         method: "POST",
 
